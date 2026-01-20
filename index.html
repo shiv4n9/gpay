@@ -43,9 +43,18 @@
                     <div class="recipient-name" id="nameAmount">Request Money</div>
                     <div class="recipient-subtitle">Enter amount to request</div>
                 </div>
-                <div class="amount-display">
-                    <span class="currency">₹</span>
-                    <span class="amount-text" id="amountDisplay">0</span>
+                <div class="amount-input-section">
+                    <div class="amount-input-wrapper">
+                        <span class="currency-symbol">₹</span>
+                        <input 
+                            type="number" 
+                            id="amountInput" 
+                            class="amount-input" 
+                            placeholder="0"
+                            min="0"
+                            step="0.01"
+                        >
+                    </div>
                 </div>
                 <div class="add-note-section">
                     <input 
@@ -55,28 +64,6 @@
                         placeholder="Add note (optional)"
                         maxlength="50"
                     >
-                </div>
-                <div class="numpad">
-                    <div class="numpad-row">
-                        <button class="num-btn" data-num="1">1</button>
-                        <button class="num-btn" data-num="2">2</button>
-                        <button class="num-btn" data-num="3">3</button>
-                    </div>
-                    <div class="numpad-row">
-                        <button class="num-btn" data-num="4">4</button>
-                        <button class="num-btn" data-num="5">5</button>
-                        <button class="num-btn" data-num="6">6</button>
-                    </div>
-                    <div class="numpad-row">
-                        <button class="num-btn" data-num="7">7</button>
-                        <button class="num-btn" data-num="8">8</button>
-                        <button class="num-btn" data-num="9">9</button>
-                    </div>
-                    <div class="numpad-row">
-                        <button class="num-btn" data-num=".">.</button>
-                        <button class="num-btn" data-num="0">0</button>
-                        <button class="num-btn backspace" data-action="backspace">⌫</button>
-                    </div>
                 </div>
                 <button class="next-btn" id="nextBtn"><span>→</span></button>
             </div>
@@ -145,34 +132,21 @@
 
         <!-- Success Screen -->
         <div class="screen" id="successScreen">
-            <div class="top-bar">
-                <div class="back-btn">←</div>
-                <div class="recipient-header">
-                    <div class="recipient-avatar-small" id="avatarSuccess">M</div>
-                    <div class="recipient-info">
-                        <div class="recipient-name-small" id="nameSuccess">MUSKAN MUSHTAQ</div>
-                        <div class="recipient-upi-small" id="upiSuccess">muskan289@fam</div>
-                    </div>
+            <div class="success-content">
+                <div class="success-icon">
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                        <circle cx="40" cy="40" r="40" fill="#34a853"/>
+                        <path d="M25 40L35 50L55 30" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-                <div class="menu-icon">⋮</div>
-            </div>
-            <div class="chat-content">
-                <div class="timestamp" id="timestamp">4:52 pm</div>
-                <div class="request-card">
-                    <div class="request-label">Request from you</div>
-                    <div class="request-note" id="chatNote"></div>
-                    <div class="request-amount">₹<span id="chatAmount">100</span></div>
-                    <div class="request-status">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="#ea8600" stroke-width="2" fill="none"/>
-                        </svg>
-                        <span id="statusTime">Unpaid • 4:52 pm</span>
-                    </div>
+                <div class="success-title">Request Created!</div>
+                <div class="success-message">Thank you for using Google Pay</div>
+                <div class="success-amount">₹<span id="successAmount">100</span></div>
+                <div class="success-details">
+                    <p>Your payment request has been sent to</p>
+                    <p><strong id="successRecipient">MUSKAN MUSHTAQ</strong></p>
                 </div>
-                <div class="action-buttons-bottom">
-                    <button class="action-btn pay-btn-bottom">Pay</button>
-                    <button class="action-btn decline-btn">Decline</button>
-                </div>
+                <div class="redirect-message">Redirecting to Google Pay...</div>
             </div>
         </div>
     </div>

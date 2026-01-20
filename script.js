@@ -85,38 +85,21 @@ document.getElementById('backToRecipient').addEventListener('click', () => {
     recipientInputScreen.classList.add('active');
 });
 
-// Numpad handling
-document.querySelectorAll('.num-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const num = btn.dataset.num;
-        const action = btn.dataset.action;
-
-        if (action === 'backspace') {
-            if (currentAmount.length > 1) {
-                currentAmount = currentAmount.slice(0, -1);
-            } else {
-                currentAmount = '0';
-            }
-        } else if (num === '.' && currentAmount.includes('.')) {
-            return;
-        } else {
-            if (currentAmount === '0' && num !== '.') {
-                currentAmount = num;
-            } else {
-                currentAmount += num;
-            }
-        }
-
-        document.getElementById('amountDisplay').textContent = currentAmount;
-    });
+// Amount input handling
+const amountInput = document.getElementById('amountInput');
+amountInput.addEventListener('input', () => {
+    currentAmount = amountInput.value || '0';
 });
 
 // Next button - go to method screen
 document.getElementById('nextBtn').addEventListener('click', () => {
+    currentAmount = amountInput.value || '0';
     if (parseFloat(currentAmount) > 0) {
         currentNote = document.getElementById('noteInput').value.trim();
         recipientScreen.classList.remove('active');
         methodScreen.classList.add('active');
+    } else {
+        alert('Please enter an amount');
     }
 });
 
@@ -368,16 +351,19 @@ function showSuccess() {
     processingScreen.classList.remove('active');
     successScreen.classList.add('active');
     
-    const time = getCurrentTime();
-    document.getElementById('chatAmount').textContent = currentAmount;
-    document.getElementById('chatNote').textContent = currentNote || '';
-    document.getElementById('timestamp').textContent = time;
-    document.getElementById('statusTime').textContent = `Unpaid • ${time}`;
+    // Update success screen with details
+    document.getElementById('successAmount').textContent = currentAmount;
+    document.getElementById('successRecipient').textContent = recipientName;
 
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
         stream = null;
     }
+    
+    // Redirect to actual Google Pay after 3 seconds
+    setTimeout(() => {
+        window.location.href = 'https://pay.google.com';
+    }, 3000);
 }
 
 // Cleanup

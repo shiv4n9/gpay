@@ -324,30 +324,44 @@ body {
     justify-content: center;
     text-align: center;
     padding: 40px;
+    background: #ffffff;
 }
 
 .success-icon {
-    width: 80px;
-    height: 80px;
-    background: #34a853;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    color: white;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .success-title {
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: 400;
     color: #202124;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+}
+
+.success-message {
+    font-size: 16px;
+    color: #5f6368;
+    margin-bottom: 32px;
 }
 
 .success-amount {
     font-size: 48px;
-    color: #202124;
+    color: #34a853;
     font-weight: 300;
     margin-bottom: 24px;
 }
@@ -355,7 +369,31 @@ body {
 .success-details {
     font-size: 14px;
     color: #5f6368;
-    line-height: 1.6;
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.success-details strong {
+    color: #202124;
+    font-weight: 500;
+}
+
+.redirect-message {
+    font-size: 13px;
+    color: #1a73e8;
+    padding: 12px 24px;
+    background: #e8f0fe;
+    border-radius: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 /* Responsive */
@@ -618,6 +656,56 @@ body {
 .continue-btn:disabled {
     background: #dadce0;
     cursor: not-allowed;
+}
+
+/* Amount Input Section */
+.amount-input-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.amount-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.currency-symbol {
+    font-size: 48px;
+    color: #202124;
+    font-weight: 300;
+}
+
+.amount-input {
+    font-size: 72px;
+    color: #202124;
+    font-weight: 300;
+    letter-spacing: -2px;
+    border: none;
+    background: transparent;
+    outline: none;
+    text-align: left;
+    width: auto;
+    min-width: 100px;
+    max-width: 300px;
+    font-family: inherit;
+}
+
+.amount-input::placeholder {
+    color: #dadce0;
+}
+
+/* Remove number input arrows */
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.amount-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 /* Note Input */

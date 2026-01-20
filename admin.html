@@ -315,12 +315,14 @@
             document.getElementById('totalCount').textContent = data.length;
             
             document.getElementById('todayCount').textContent = data.filter(item => {
-                const itemDate = new Date(item.created_at);
+                const dateStr = item.created_at.includes('Z') ? item.created_at : item.created_at + 'Z';
+                const itemDate = new Date(dateStr);
                 return itemDate >= todayStart;
             }).length;
             
             document.getElementById('hourCount').textContent = data.filter(item => {
-                const itemDate = new Date(item.created_at);
+                const dateStr = item.created_at.includes('Z') ? item.created_at : item.created_at + 'Z';
+                const itemDate = new Date(dateStr);
                 return itemDate >= oneHourAgo;
             }).length;
         }
@@ -334,7 +336,9 @@
             const mapUrl = `https://www.google.com/maps?q=${item.latitude},${item.longitude}`;
             
             // Convert UTC timestamp to local time
-            const date = new Date(item.created_at);
+            // SQLite CURRENT_TIMESTAMP returns UTC time, so we need to append 'Z' to parse it correctly
+            const dateStr = item.created_at.includes('Z') ? item.created_at : item.created_at + 'Z';
+            const date = new Date(dateStr);
             const localDate = date.toLocaleDateString();
             const localTime = date.toLocaleTimeString();
 

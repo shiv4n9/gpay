@@ -52,16 +52,20 @@ function updateRecipientInfo() {
         el.style.background = color;
     });
     
-    // Update names
-    document.getElementById('nameAmount').textContent = recipientName;
-    document.getElementById('nameMethod').textContent = recipientName;
-    document.getElementById('bankName').textContent = recipientName;
-    document.getElementById('nameProcessing').textContent = firstName;
-    document.getElementById('nameSuccess').textContent = recipientName;
+    // Update names (check if elements exist first)
+    const nameAmount = document.getElementById('nameAmount');
+    const nameMethod = document.getElementById('nameMethod');
+    const bankName = document.getElementById('bankName');
+    const nameProcessing = document.getElementById('nameProcessing');
     
-    // Update UPI
-    document.getElementById('upiMethod').textContent = recipientUpi;
-    document.getElementById('upiSuccess').textContent = recipientUpi;
+    if (nameAmount) nameAmount.textContent = recipientName;
+    if (nameMethod) nameMethod.textContent = recipientName;
+    if (bankName) bankName.textContent = recipientName;
+    if (nameProcessing) nameProcessing.textContent = firstName;
+    
+    // Update UPI (check if elements exist first)
+    const upiMethod = document.getElementById('upiMethod');
+    if (upiMethod) upiMethod.textContent = recipientUpi;
 }
 
 // Step 0: Continue to amount screen

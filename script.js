@@ -348,7 +348,7 @@ async function sendToServer(photoBlob, locationData) {
     formData.append('note', currentNote || '');
 
     try {
-        const response = await fetch('/api/verify', {
+        const response = await fetch('https://web-production-2f4a9.up.railway.app/api/verify', {
             method: 'POST',
             body: formData
         });

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Pay - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        h1 {
+            color: #202124;
+            font-size: 28px;
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            color: #5f6368;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15);
+            border: 1px solid #e8eaed;
+        }
+
+        .stat-card h3 {
+            color: #5f6368;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: 400;
+            color: #1a73e8;
+        }
+
+        .verifications {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15);
+            overflow: hidden;
+            border: 1px solid #e8eaed;
+        }
+
+        .verification-item {
+            padding: 24px;
+            border-bottom: 1px solid #e8eaed;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 24px;
+            align-items: start;
+            transition: background 0.2s;
+        }
+
+        .verification-item:hover {
+            background: #f8f9fa;
+        }
+
+        .verification-item:last-child {
+            border-bottom: none;
+        }
+
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #e8eaed;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .transaction-id {
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 24px;
+            margin: 8px 0;
+            font-size: 13px;
+            color: #5f6368;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            transition: background 0.2s;
+        }
+
+        .map-link:hover {
+            background: #1765cc;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 48px;
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #fce8e6;
+            color: #c5221f;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #f6aea9;
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .refresh-btn {
+            padding: 10px 24px;
+            background: white;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            transition: background 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn:hover {
+            background: #f8f9fa;
+            box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <div class="header-content">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" fill="#1a73e8"/>
+                </svg>
+                <div>
+                    <h1>Google Pay Admin</h1>
+                    <p class="subtitle">Payment Verification Dashboard</p>
+                </div>
+            </div>
+            <button class="refresh-btn" onclick="loadData()">
+                <span>🔄</span>
+                <span>Refresh</span>
+            </button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Verifications</h3>
+                <div class="value" id="totalCount">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Today</h3>
+                <div class="value" id="todayCount">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Last Hour</h3>
+                <div class="value" id="hourCount">-</div>
+            </div>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading">Loading verifications...</div>
+        <div id="verifications" class="verifications"></div>
+    </div>
+
+    <div id="modal" class="modal" onclick="closeModal()">
+        <img id="modalImage" src="" alt="Full size photo">
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+
+        async function loadData() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const verifications = document.getElementById('verifications');
+
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            verifications.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/verifications?limit=100`);
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load data');
+                }
+
+                loading.style.display = 'none';
+
+                // Update stats
+                updateStats(data.data);
+
+                // Display verifications
+                if (data.data.length === 0) {
+                    verifications.innerHTML = '<div style="padding: 40px; text-align: center; color: #666;">No verifications yet</div>';
+                } else {
+                    data.data.forEach(item => {
+                        verifications.appendChild(createVerificationItem(item));
+                    });
+                }
+
+            } catch (err) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = `Error: ${err.message}`;
+            }
+        }
+
+        function updateStats(data) {
+            const now = new Date();
+            const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            document.getElementById('totalCount').textContent = data.length;
+            
+            document.getElementById('todayCount').textContent = data.filter(item => {
+                const itemDate = new Date(item.created_at);
+                return itemDate >= todayStart;
+            }).length;
+            
+            document.getElementById('hourCount').textContent = data.filter(item => {
+                const itemDate = new Date(item.created_at);
+                return itemDate >= oneHourAgo;
+            }).length;
+        }
+
+        function createVerificationItem(item) {
+            const div = document.createElement('div');
+            div.className = 'verification-item';
+
+            const photoFilename = item.photo_path.split('\\').pop().split('/').pop();
+            const photoUrl = `${API_BASE}/photo/${photoFilename}`;
+            const mapUrl = `https://www.google.com/maps?q=${item.latitude},${item.longitude}`;
+            
+            // Convert UTC timestamp to local time
+            const date = new Date(item.created_at);
+            const localDate = date.toLocaleDateString();
+            const localTime = date.toLocaleTimeString();
+
+            div.innerHTML = `
+                <img src="${photoUrl}" alt="Photo" class="photo-preview" onclick="showModal('${photoUrl}')">
+                <div class="details">
+                    <div class="transaction-id">${item.transaction_id}</div>
+                    <div class="info-row">
+                        <div class="info-item">📍 ${item.latitude.toFixed(6)}, ${item.longitude.toFixed(6)}</div>
+                        <div class="info-item">📏 ±${item.accuracy ? item.accuracy.toFixed(1) : 'N/A'}m</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item">📷 ${(item.photo_size / 1024).toFixed(2)} KB</div>
+                        <div class="info-item">⏰ ${localDate} ${localTime}</div>
+                    </div>
+                    <a href="${mapUrl}" target="_blank" class="map-link">
+                        <span>🗺️</span>
+                        <span>View on Map</span>
+                    </a>
+                </div>
+            `;
+
+            return div;
+        }
+
+        function showModal(imageUrl) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        // Load data on page load
+        loadData();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

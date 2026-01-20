@@ -295,6 +295,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    width: 100%;
 }
 
 .pay-btn {
@@ -313,6 +314,11 @@ body {
 
 .request-btn:hover {
     background: #1765cc;
+}
+
+.request-btn:disabled {
+    background: #dadce0;
+    cursor: not-allowed;
 }
 
 /* Success Screen */
